@@ -9,8 +9,9 @@ public class Pool : MonoBehaviour
   public IReadOnlyCollection<GameObject> ActiveObjects => activeObjects;
   [SerializeField]
   private GameObject prefab;
+  public GameObject Prefab { set => prefab = value; }
   private GameObject currentObject;
-  private GameObject CurrentObject => currentObject;
+  public  GameObject CurrentObject => currentObject;
   public void InstantiateObject(Vector3 position)
     {
         if(poolStack.Count > 0)

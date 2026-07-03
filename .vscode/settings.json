@@ -67,6 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Doom_SVN.slnx",
+    "dotnet.defaultSolution": "doom.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false
 }
