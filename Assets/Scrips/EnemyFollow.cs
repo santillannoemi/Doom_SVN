@@ -22,6 +22,7 @@ private void OnEnable()
     {
         SoundManager.instance.Play("cacodemon_damage");
         if(!isFollowing )return;
+        if(CheckWin()) return ;
         isFollowing =false;
         base.TakeDamage();
         StartCoroutine(StopAndFollow());

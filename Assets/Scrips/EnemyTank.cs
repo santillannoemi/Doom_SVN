@@ -29,6 +29,7 @@ private bool IsInRange()
     private void Update()
     {
         if (health.CurrentHealth <= 0)return;
+        if (CheckWin()) return;
         if(IsInRange())
         {
             isShooting =true;
