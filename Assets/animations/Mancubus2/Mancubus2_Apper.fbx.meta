@@ -31,10 +31,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Apper
+      name: Appear
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 7.8000007
+      firstFrame: 8.1
       lastFrame: 18
       wrapMode: 0
       orientationOffsetY: 0
