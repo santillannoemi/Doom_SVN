@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class FirstPersonMovement : MonoBehaviour
@@ -14,6 +15,15 @@ public class FirstPersonMovement : MonoBehaviour
     Rigidbody rigidbody;
     /// <summary> Functions to override movement speed. Will use the last added override. </summary>
     public List<System.Func<float>> speedOverrides = new List<System.Func<float>>();
+    private UnityEngine.Vector3 knockbackVelocity= UnityEngine.Vector3.zero;
+    [SerializeField]
+    private float knockbackDamping =8f;
+    public void AddKnockback(UnityEngine.Vector3 direction,float force)
+    {
+        direction.y = 0f;
+        direction.Normalize();
+        knockbackVelocity += direction * force;
+    }
 
 
 
@@ -35,10 +45,11 @@ public class FirstPersonMovement : MonoBehaviour
             targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
         }
 
-        // Get targetVelocity from input.
-        Vector2 targetVelocity =new Vector2( Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
-
-        // Apply movement.
-        rigidbody.linearVelocity = transform.rotation * new Vector3(targetVelocity.x, rigidbody.linearVelocity.y, targetVelocity.y);
+       UnityEngine.Vector2 input = new UnityEngine.Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Verticar"));
+       UnityEngine.Vector3 movementVelocity = transform.rotation * new UnityEngine.Vector3(input.x, 0, input.y) * targetMovingSpeed;
+       UnityEngine.Vector3 finalVelocity = movementVelocity + knockbackVelocity;
+       finalVelocity.y = rigidbody.linearVelocity.y;
+       rigidbody.linearVelocity = finalVelocity;
+       knockbackVelocity = UnityEngine.Vector3.Lerp(knockbackVelocity, UnityEngine.Vector3.zero, knockbackDamping * Time.fixedDeltaTime);
     }
 }
