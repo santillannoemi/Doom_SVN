@@ -45,7 +45,7 @@ public class FirstPersonMovement : MonoBehaviour
             targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
         }
 
-       UnityEngine.Vector2 input = new UnityEngine.Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Verticar"));
+       UnityEngine.Vector2 input = new UnityEngine.Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
        UnityEngine.Vector3 movementVelocity = transform.rotation * new UnityEngine.Vector3(input.x, 0, input.y) * targetMovingSpeed;
        UnityEngine.Vector3 finalVelocity = movementVelocity + knockbackVelocity;
        finalVelocity.y = rigidbody.linearVelocity.y;

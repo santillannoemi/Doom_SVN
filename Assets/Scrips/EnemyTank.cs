@@ -26,7 +26,7 @@ private bool IsInRange()
     {
         return Vector3.Distance(transform.position, player.transform.position) <= range;
     }
-    private void Update()
+    private void  Update()
     {
         if (health.CurrentHealth <= 0)return;
         if (CheckWin()) return;
