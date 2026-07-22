@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8019509362849865843}
   - component: {fileID: 6028802458908413354}
   m_Layer: 0
-  m_Name: SemiAutomaticGun 1
+  m_Name: MegaSemiAutomaticGun
   m_TagString: gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
