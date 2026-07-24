@@ -19,6 +19,7 @@ public class EnemySniper : Enemy
     private bool isShooting = false;
     public override void OnEnable()
     {
+        timerText.text="";
         isShooting = false;
         base.OnEnable();
         nextFireTime = 0f;
@@ -41,7 +42,7 @@ public class EnemySniper : Enemy
     {
         laserBeam.Target = player;
         laserBeam.ActivateLaser(true);
-        SoundManager.instance.Play("SnaperSpotted");
+        SoundManager.instance.Play("SniperSpotted");
         animator.Play("Aim", 0, 0f);
         yield return animator.WaitForCurrentAnimation();
         StartCoroutine(Shoot());
@@ -51,12 +52,14 @@ public class EnemySniper : Enemy
         float duration = aimTime;
         while (duration > 0f)
         {
+            SoundManager.instance.Play("SniperTimer");
             duration --;
             timerText.text = duration.ToString();
             yield return new WaitForSeconds(1f);
         }
+        timerText.text="";
         animator.Play("Fire", 0, 0f);
-        SoundManager.instance.Play("SnaperShoot");
+        SoundManager.instance.Play("SniperShoot");
          laserBeam.ActivateLaser(false);
         player.GetComponent<Health>().TakeDamage(damage);
         isShooting = false;
@@ -66,6 +69,6 @@ public class EnemySniper : Enemy
     {
         laserBeam.ActivateLaser(false);
         base.Die();
-        SoundManager.instance.Play("SnaperDie");    
+        SoundManager.instance.Play("SniperDie");    
     }
 }
