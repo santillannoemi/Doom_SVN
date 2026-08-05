@@ -4,17 +4,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-
 [SerializeField]
-private Transform gunPosition;
-[SerializeField]
-private InputManager inputManager;
-[SerializeField]
-private Text ammoText;
-[SerializeField]
-private UnityEvent onGunGrabbed;
-[SerializeField]
-private UnityEvent onGunDropped;
+private GunManager gunManager;
 private Health health;
 private Rigidbody rb;
 public float CurrentHealth => health.CurrentHealth;
@@ -28,7 +19,7 @@ private void Awake()
   }
 private void  Start()
 {
-onGunDropped?.Invoke();  
+
 
 health.InitializeHealth();
 
@@ -37,35 +28,12 @@ health.InitializeHealth();
 private void OnTriggerEnter(Collider other)
 
     {
-      if (other.CompareTag("gun") && currentGun == null)
-        {
-        currentGun = other.GetComponent<Gun>();
-        currentGun.GrabGun(gunPosition, ammoText );
-        onGunGrabbed?.Invoke();
-        currentGun.OnGunEmpty.AddListener(DropGun); 
-        }
-        
-        }
-
-    private void Update()
-  {
-    if (currentGun != null)
+      if (other.CompareTag("gun"))
     {
-      currentGun.HandleFire(inputManager.LeftButtonPressed, inputManager.LeftButtonHeld);
-      if(inputManager.RightButtonPressed)
-      {
-        currentGun.ChargeGun();
-      }
+      gunManager.GrabGun(other.GetComponent<Gun>());
     }
-  }
+    }
 
-  public void DropGun()
-  {
-    if(currentGun == null) return;
-    Destroy(currentGun.gameObject);
-    currentGun=null;
-    onGunDropped?.Invoke();
-  }
   public void PushBack(Transform enemy, float force)
   {
     Vector3 pushDirection = (transform.position - enemy.position).normalized;
@@ -73,7 +41,7 @@ private void OnTriggerEnter(Collider other)
   }
   public void Die()
   {
-    DropGun();
+    gunManager.DropAllGuns();
     GetComponent<FirstPersonMovement>().enabled= false;
     GetComponentInChildren<FirstPersonLook>().enabled = false;
     rb.isKinematic = true;

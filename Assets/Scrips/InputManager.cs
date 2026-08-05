@@ -4,7 +4,11 @@ using UnityEngine.Events;
 public class InputManager : MonoBehaviour
 {
 [SerializeField]
-private UnityEvent OnPKeyPressed;  
+private UnityEvent OnPKeyPressed; 
+[SerializeField]
+private UnityEvent onScrollUp;
+[SerializeField]
+private UnityEvent OnScrollDown; 
 public bool LeftButtonPressed {get; private set;}
 public bool LeftButtonHeld {get; private set;}
 public bool RightButtonPressed {get; private set;}
@@ -17,6 +21,15 @@ RightButtonPressed = Input.GetMouseButtonDown(1);
 if(Input.GetKeyDown(KeyCode.P))
         {
             OnPKeyPressed.Invoke();
+        }
+        float scroll =Input.GetAxis("Mouse ScrollWheel");
+        if(scroll > 0f)
+        {
+            onScrollUp?.Invoke();
+        }
+        else if (scroll < 0f)
+        {
+            OnScrollDown?.Invoke();
         }
 }
 
