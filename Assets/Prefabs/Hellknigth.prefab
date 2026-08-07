@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 5077513773166663960}
   - component: {fileID: 3946396600839916283}
   - component: {fileID: 6829353506579539533}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Hellknigth
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Events;
-
+ 
 public class GunManager : MonoBehaviour
 {
     [SerializeField]
@@ -14,10 +14,14 @@ public class GunManager : MonoBehaviour
     [SerializeField]
     private Text ammoText;
     [SerializeField]
+    private Image gunIcon;
+    [SerializeField]
+    private Scope scope;
+    [SerializeField]
     private InputManager inputManager;
     private Gun currentGun;
     private List<Gun> guns = new List<Gun>();
-    private int currentGunIntex = 0;
+    private int currentGunIndex = 0;
     private void Awake()
     {
         onGunDropped?.Invoke();
@@ -25,9 +29,9 @@ public class GunManager : MonoBehaviour
     public void GrabGun(Gun gun)
     {
         Gun existingGun = guns.Find(listGun => listGun.GunData == gun.GunData);
-        if ( existingGun != null)
+        if(existingGun != null)
         {
-            if( existingGun.IsGunFull)
+            if(existingGun.IsGunFull)
             {
                 return;
             }
@@ -40,34 +44,47 @@ public class GunManager : MonoBehaviour
         currentGun = gun;
         currentGun.GrabGun(gunPosition, ammoText);
         currentGun.OnGunEmpty.AddListener(DropGun);
+        currentGun.OnGunShoot.AddListener(scope.PlayFireAnimation);
         onGunGrabbed?.Invoke();
-        currentGunIntex = guns.IndexOf(currentGun);
+        currentGunIndex = guns.IndexOf(currentGun);
+        SetIcon(currentGun.GunData.sprite);
     }
     public void SwitchUpGun()
     {
-        currentGunIntex++;
-        if (currentGunIntex >= guns.Count)
+        currentGunIndex++;
+        if(currentGunIndex >= guns.Count)
         {
-            currentGunIntex = 0;
+            currentGunIndex = 0;
         }
         SwitchGun();
     }
     public void SwitchDownGun()
     {
-        currentGunIntex--;
-        if (currentGunIntex < 00)
+        currentGunIndex--;
+        if(currentGunIndex < 0)
         {
-            currentGunIntex = guns.Count -1;
+            currentGunIndex = guns.Count - 1;
         }
         SwitchGun();
     }
     private void SwitchGun()
     {
-        if (guns.Count <= 1) return;
+        if(guns.Count <= 1) return;
         currentGun.gameObject.SetActive(false);
-        currentGun = guns[currentGunIntex];
+        gunIcon.sprite = currentGun.GunData.sprite;
+        SetGun();
+    }
+    public void SetGun()
+    {
+        currentGun = guns[currentGunIndex];
         currentGun.gameObject.SetActive(true);
         currentGun.GrabGun(gunPosition, ammoText, false);
+        SetIcon(currentGun.GunData.sprite);
+    }
+    public void SetIcon(Sprite sprite)
+    {
+        gunIcon.sprite = sprite;
+        gunIcon.SetNativeSize();
     }
     public void DropAllGuns()
     {
@@ -82,14 +99,13 @@ public class GunManager : MonoBehaviour
     public void DropGun()
     {
         currentGun.OnGunEmpty.RemoveListener(DropGun);
+        currentGun.OnGunShoot.RemoveListener(scope.PlayFireAnimation);
         guns.Remove(currentGun);
         Destroy(currentGun.gameObject);
         if(guns.Count > 0)
         {
-            currentGunIntex = guns.Count - 1;
-            currentGun = guns[currentGunIntex];
-            currentGun.gameObject.SetActive(true);
-            currentGun.GrabGun(gunPosition, ammoText, false);
+            currentGunIndex = guns.Count - 1;
+            SetGun();
         }
         else
         {
@@ -99,12 +115,20 @@ public class GunManager : MonoBehaviour
     }
     private void Update()
     {
-        if(currentGun == null) return;
-        currentGun.HandleFire(inputManager.LeftButtonPressed, inputManager.LeftButtonHeld);
-        if(inputManager.RightButtonPressed)
+     if (currentGun == null) return;
+     currentGun.HandleFire(inputManager.LeftButtonPressed, inputManager.LeftButtonHeld);
+     if (inputManager.RightButtonPressed)
         {
             currentGun.ChargeGun();
         }
+        if (currentGun.IsAimingEnemy())
+        {
+            scope.ChangeToAimingColor();
+        }
+        else
+        {
+            scope.ChangeToIdleColor();
+        }
     }
-
 }
+ 
