@@ -5,14 +5,23 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/BaseScene.unity
+    guid: 2cec7b5fbd3671042993f5d239b301f5
+  - enabled: 0
+    path: Assets/Scenes/Examen2.unity
+    guid: 2fea0c1d982f609458738e4f3a1af22d
+  - enabled: 1
+    path: Assets/Scenes/Piso3.unity
+    guid: 7d2fa889470049746b3e71ec476d2b00
+  - enabled: 1
+    path: Assets/Scenes/Piso2.unity
+    guid: ee58cb58fb1d9f84bb91e62cf6c8cdd0
+  - enabled: 1
+    path: Assets/Scenes/Piso1.unity
+    guid: 2b6c3a8958c230443a355413c7f61c89
   - enabled: 1
     path: Assets/Scenes/menu.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/BaseScene.unity
-    guid: 2cec7b5fbd3671042993f5d239b301f5
-  - enabled: 1
-    path: Assets/Scenes/India.unity
-    guid: 2fea0c1d982f609458738e4f3a1af22d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
